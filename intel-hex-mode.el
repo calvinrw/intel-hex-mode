@@ -70,7 +70,7 @@
 (defvar intel-hex-font-lock-keywords
   '(("^\\:" . font-lock-comment-face)
     ("^\\:\\([0-9A-Fa-f]\\{2\\}\\)" 1 font-lock-variable-name-face)
-    ("^\\:[0-9A-Fa-f]\\{2\\}\\([0-9A-Fa-f]\\{4\\}\\)" 1 font-lock-reference-face)
+    ("^\\:[0-9A-Fa-f]\\{2\\}\\([0-9A-Fa-f]\\{4\\}\\)" 1 font-lock-constant-face)
     ("^\\:[0-9A-Fa-f]\\{6\\}\\([0-9A-Fa-f]\\{2\\}\\)" 1 font-lock-string-face)
     ("[^0-9A-Fa-f]+" . font-lock-warning-face)
     ("\\([0-9A-Fa-f]\\{2\\}\\)$" 1 font-lock-keyword-face))
@@ -99,7 +99,7 @@ package.  Note that the latest X/Emacs releases contain this package.")
     ["Customize..."               intel-hex-customize                t]))
 
 ;;;###autoload
-(define-derived-mode intel-hex-mode prog-mode ()
+(define-derived-mode intel-hex-mode prog-mode "Intel-Hex"
   "Major mode for the Intel Hex files.
 \\<intel-hex-mode-map>
 \\[intel-hex-update-line-checksum]\t- Updates the line checksum.
@@ -115,12 +115,8 @@ This mode can be customized by running \\[intel-hex-customize].
 
 Turning on Intel Hex mode calls the value of the variable
 `intel-hex-mode-hook' with no args, if that value is non-nil."
-  (interactive)
-  (kill-all-local-variables)
   (set (make-local-variable 'font-lock-defaults)
        '(intel-hex-font-lock-keywords))
-  (if intel-hex-menu
-      (easy-menu-add intel-hex-menu))
   (if intel-hex-enable-overwrite
       (overwrite-mode t))
   (if intel-hex-mode-line
